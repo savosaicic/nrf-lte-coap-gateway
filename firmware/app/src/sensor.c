@@ -48,3 +48,15 @@ sensor_channel_t *sensor_channel_register(const char *name, sensor_type_t type)
   k_mutex_unlock(&g_mutex);
   return ch;
 }
+
+int sensor_channel_update_float(sensor_channel_t *ch, float value)
+{
+  if (!ch || ch->type != SENSOR_TYPE_FLOAT) {
+    return -EINVAL;
+  }
+  k_mutex_lock(&g_mutex, K_FOREVER);
+  ch->value.f   = value;
+  ch->has_value = true;
+  k_mutex_unlock(&g_mutex);
+  return 0;
+}
