@@ -1,0 +1,10 @@
+# Build outputs
+**/build/
+**/.cache/
+**/*.o
+server/coap-server
+
+# Server database file
+**/*.db
+
+**/compile_commands.json
