@@ -20,4 +20,6 @@ typedef struct {
   bool           has_value;
 } sensor_channel_t;
 
+sensor_channel_t *sensor_channel_register(const char *name, sensor_type_t type);
+
 #endif /* SENSOR_H */
