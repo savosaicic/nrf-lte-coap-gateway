@@ -1,6 +1,7 @@
 #ifndef SENSOR_H
 
 #include <stdbool.h>
+#include <stddef.h>
 
 #define SENSOR_MAX_CHANNELS 16
 #define SENSOR_NAME_MAX_LEN 64
@@ -23,5 +24,7 @@ typedef struct {
 sensor_channel_t *sensor_channel_register(const char *name, sensor_type_t type);
 
 int sensor_channel_update_float(sensor_channel_t *ch, float value);
+
+void sensor_channel_get_all(const sensor_channel_t **channels, size_t *count);
 
 #endif /* SENSOR_H */

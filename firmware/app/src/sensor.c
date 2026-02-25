@@ -60,3 +60,9 @@ int sensor_channel_update_float(sensor_channel_t *ch, float value)
   k_mutex_unlock(&g_mutex);
   return 0;
 }
+
+void sensor_channel_get_all(const sensor_channel_t **channels, size_t *count)
+{
+  *channels = g_channels;
+  *count    = g_channel_count;
+}
