@@ -3,4 +3,6 @@ find_package(Zephyr REQUIRED HINTS $ENV{ZEPHYR_BASE})
 
 project(nrf_coap_sensor_gateway)
 
+target_include_directories(app PRIVATE include)
+
 target_sources(app PRIVATE src/main.c)
