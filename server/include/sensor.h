@@ -8,7 +8,9 @@
 #define SENSOR_MAX_CHANNELS 16
 
 typedef enum {
-  SENSOR_TYPE_FLOAT = 0,
+  SENSOR_TYPE_FIRST = 0,
+  SENSOR_TYPE_FLOAT = SENSOR_TYPE_FIRST,
+  SENSOR_TYPE_LAST
 } sensor_type_t;
 
 typedef union {

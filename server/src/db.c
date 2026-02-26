@@ -196,6 +196,8 @@ int db_insert_reading(const sensor_channel_t *ch, int64_t timestamp)
       goto error;
     }
     break;
+  case SENSOR_TYPE_LAST:
+    break;
   }
 
   rc = sqlite3_step(stmt);

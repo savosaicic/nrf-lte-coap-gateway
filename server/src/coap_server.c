@@ -66,6 +66,8 @@ static void handle_snapshot_post(coap_resource_t     *resource,
     case SENSOR_TYPE_FLOAT:
       sensor_channel_update_float(ch, r->value.f);
       break;
+    case SENSOR_TYPE_LAST:
+      break;
     }
 
     if (db_insert_reading(ch, 0) != 0) {
