@@ -33,7 +33,8 @@ void sensor_reg_close(sensor_registry_t *reg)
  * @param name Unique name for the channel
  * @param type Sensor type to assign to the channel
  *
- * @return Pointer to the registered channel, or NULL if the registration fails
+ * @return Pointer to the registered or existing channel, or NULL if the name
+ *         is empty or the registry is full
  */
 sensor_channel_t *sensor_channel_register(sensor_registry_t *reg,
                                           const char *name, sensor_type_t type)
@@ -45,16 +46,15 @@ sensor_channel_t *sensor_channel_register(sensor_registry_t *reg,
     return NULL;
   }
 
+  for (size_t i = 0; i < reg->count; i++) {
+    if (strcmp(reg->channels[i].name, name) == 0) {
+      return &reg->channels[i];
+    }
+  }
+
   if (reg->count >= SENSOR_MAX_CHANNELS) {
     fprintf(stderr, "Channel registry is full (max %i)", SENSOR_MAX_CHANNELS);
     return NULL;
-  }
-
-  for (size_t i = 0; i < reg->count; i++) {
-    if (strcmp(reg->channels[i].name, name) == 0) {
-      fprintf(stderr, "Channel `%s` already registered", name);
-      return NULL;
-    }
   }
 
   ch = &reg->channels[reg->count++];
