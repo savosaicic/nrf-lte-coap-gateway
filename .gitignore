@@ -2,6 +2,8 @@
 **/build/
 **/.cache/
 **/*.o
+**/dep/
+**/obj/
 server/coap-server
 
 # Server database file
