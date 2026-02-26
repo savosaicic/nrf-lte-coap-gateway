@@ -64,6 +64,7 @@ int db_init(const char *path)
   return 0;
 }
 
+/* Returns its ID if found, 0 if not found, -1 on error. */
 static int db_channel_lookup(const char *name)
 {
   sqlite3_stmt *stmt = NULL;
@@ -86,12 +87,13 @@ static int db_channel_lookup(const char *name)
     goto error;
   }
 
-
-  if (sqlite3_step(stmt) == SQLITE_ROW) {
+  rc = sqlite3_step(stmt);
+  if (rc == SQLITE_ROW) {
     id = sqlite3_column_int(stmt, 0);
+  } else if (rc == SQLITE_DONE) {
+    id = 0; /* not found: not an error */
   } else {
-    fprintf(stderr, "sqlite3_step failed: %s\n",
-      sqlite3_errmsg(g_db));
+    fprintf(stderr, "sqlite3_step failed: %s\n", sqlite3_errmsg(g_db));
     goto error;
   }
 
@@ -112,7 +114,7 @@ static int db_channel_get_or_create(const char *name, sensor_type_t type)
   int           rc;
 
   id = db_channel_lookup(name);
-  if (id >= 0) {
+  if (id > 0) {
     return id;
   }
 
