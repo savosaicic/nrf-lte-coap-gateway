@@ -26,6 +26,11 @@ void sensor_reg_close(sensor_registry_t *reg)
   reg->count = 0;
 }
 
+sensor_registry_t *sensor_reg_get()
+{
+  return &g_registry;
+}
+
 /**
  * @brief Register a new sensor channel in the registry
  *

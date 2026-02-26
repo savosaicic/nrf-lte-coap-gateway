@@ -30,6 +30,7 @@ typedef struct {
 
 sensor_registry_t *sensor_reg_init(void);
 void               sensor_reg_close(sensor_registry_t *reg);
+sensor_registry_t *sensor_reg_get();
 
 sensor_channel_t *sensor_channel_register(sensor_registry_t *reg,
                                           const char *name, sensor_type_t type);
