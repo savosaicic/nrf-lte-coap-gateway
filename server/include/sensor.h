@@ -33,5 +33,6 @@ void               sensor_reg_close(sensor_registry_t *reg);
 
 sensor_channel_t *sensor_channel_register(sensor_registry_t *reg,
                                           const char *name, sensor_type_t type);
+int               sensor_channel_update_float(sensor_channel_t *ch, float value);
 
 #endif /* SENSOR_H */

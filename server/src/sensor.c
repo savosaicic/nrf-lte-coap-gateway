@@ -64,3 +64,21 @@ sensor_channel_t *sensor_channel_register(sensor_registry_t *reg,
   ch->has_value = false;
   return ch;
 }
+
+/**
+ * @brief Update the float value of a sensor channel
+ *
+ * @param ch    Pointer to the sensor channel
+ * @param value Float value to set
+ *
+ * @return 0 on success, -1 on failure
+ */
+int sensor_channel_update_float(sensor_channel_t *ch, float value)
+{
+  if (!ch || ch->type != SENSOR_TYPE_FLOAT) {
+    return -1;
+  }
+  ch->value.f   = value;
+  ch->has_value = true;
+  return 0;
+}
