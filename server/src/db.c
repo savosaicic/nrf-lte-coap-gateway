@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "sensor.h"
+
 static sqlite3 *g_db = NULL;
 
 static int db_exec(sqlite3 *db, const char *sql)
@@ -95,6 +97,53 @@ static int db_channel_lookup(const char *name)
 
   sqlite3_finalize(stmt);
   return id;
+
+error:
+  if (stmt) {
+    sqlite3_finalize(stmt);
+  }
+  return -1;
+}
+
+static int db_channel_get_or_create(const char *name, sensor_type_t type)
+{
+  sqlite3_stmt *stmt = NULL;
+  int           id;
+  int           rc;
+
+  id = db_channel_lookup(name);
+  if (id >= 0) {
+    return id;
+  }
+
+  rc = sqlite3_prepare_v2(g_db,
+    "INSERT INTO channels (name, type) VALUES (?, ?)",
+    -1, &stmt, NULL);
+  if (rc != SQLITE_OK) {
+    fprintf(stderr, "sqlite3_prepare_v2 failed: %s\n", sqlite3_errmsg(g_db));
+    goto error;
+  }
+
+  rc = sqlite3_bind_text(stmt, 1, name, -1, SQLITE_STATIC);
+  if (rc != SQLITE_OK) {
+    fprintf(stderr, "sqlite3_bind_text failed: %s\n", sqlite3_errmsg(g_db));
+    goto error;
+  }
+
+  rc = sqlite3_bind_int(stmt, 2, (int)type);
+  if (rc != SQLITE_OK) {
+    fprintf(stderr, "sqlite3_bind_int failed: %s\n", sqlite3_errmsg(g_db));
+    goto error;
+  }
+
+  rc = sqlite3_step(stmt);
+  if (rc != SQLITE_DONE) {
+    fprintf(stderr, "sqlite3_step failed: %s\n", sqlite3_errmsg(g_db));
+    goto error;
+  }
+
+  sqlite3_finalize(stmt);
+  return (int)sqlite3_last_insert_rowid(g_db);
 
 error:
   if (stmt) {
