@@ -2,8 +2,10 @@
 #define SENSOR_H
 
 #include <stdbool.h>
+#include <stddef.h>
 
 #define SENSOR_NAME_MAX_LEN 64
+#define SENSOR_MAX_CHANNELS 16
 
 typedef enum {
   SENSOR_TYPE_FLOAT = 0,
@@ -20,5 +22,13 @@ typedef struct {
   bool           has_value;
 
 } sensor_channel_t;
+
+typedef struct {
+  sensor_channel_t channels[SENSOR_MAX_CHANNELS];
+  size_t           count;
+} sensor_registry_t;
+
+sensor_registry_t *sensor_reg_init(void);
+void               sensor_reg_close(sensor_registry_t *reg);
 
 #endif /* SENSOR_H */
