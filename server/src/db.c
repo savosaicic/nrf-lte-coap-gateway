@@ -62,6 +62,47 @@ int db_init(const char *path)
   return 0;
 }
 
+static int db_channel_lookup(const char *name)
+{
+  sqlite3_stmt *stmt = NULL;
+  int           id = -1;
+  int           rc;
+
+  rc = sqlite3_prepare_v2(g_db,
+         "SELECT id FROM channels WHERE name = ?",
+         -1, &stmt, NULL);
+  if (rc != SQLITE_OK) {
+    fprintf(stderr, "db_channel_lookup failed: %s\n",
+      sqlite3_errmsg(g_db));
+    goto error;
+  }
+
+  rc = sqlite3_bind_text(stmt, 1, name, -1, SQLITE_STATIC);
+  if (rc != SQLITE_OK) {
+    fprintf(stderr, "sqlite3_bind_text failed: %s\n",
+      sqlite3_errmsg(g_db));
+    goto error;
+  }
+
+
+  if (sqlite3_step(stmt) == SQLITE_ROW) {
+    id = sqlite3_column_int(stmt, 0);
+  } else {
+    fprintf(stderr, "sqlite3_step failed: %s\n",
+      sqlite3_errmsg(g_db));
+    goto error;
+  }
+
+  sqlite3_finalize(stmt);
+  return id;
+
+error:
+  if (stmt) {
+    sqlite3_finalize(stmt);
+  }
+  return -1;
+}
+
 void db_close(void)
 {
   if (g_db) {
