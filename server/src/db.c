@@ -152,6 +152,65 @@ error:
   return -1;
 }
 
+int db_insert_reading(const sensor_channel_t *ch, int64_t timestamp)
+{
+  sqlite3_stmt *stmt = NULL;
+  int           channel_id;
+  int           rc;
+
+  channel_id = db_channel_get_or_create(ch->name, ch->type);
+  if (channel_id <= 0) {
+    fprintf(stderr, "failed to get or create channel `%s`\n", ch->name);
+    goto error;
+  }
+
+  rc = sqlite3_prepare_v2(g_db,
+    "INSERT INTO readings (channel_id, timestamp, value_float) "
+    "VALUES (?, ?, ?)",
+    -1, &stmt, NULL);
+  if (rc != SQLITE_OK) {
+    fprintf(stderr, "sqlite3_prepare_v2 failed: %s\n", sqlite3_errmsg(g_db));
+    goto error;
+  }
+
+  rc = sqlite3_bind_int64(stmt, 1, channel_id);
+  if (rc != SQLITE_OK) {
+    fprintf(stderr, "sqlite3_bind_int64 failed: %s\n", sqlite3_errmsg(g_db));
+    goto error;
+  }
+
+  rc = sqlite3_bind_int64(stmt, 2, timestamp);
+  if (rc != SQLITE_OK) {
+    fprintf(stderr, "sqlite3_bind_int64 failed: %s\n", sqlite3_errmsg(g_db));
+    goto error;
+  }
+
+  /* only bind the relevant column, leave the other NULL */
+  switch (ch->type) {
+  case SENSOR_TYPE_FLOAT:
+    rc = sqlite3_bind_double(stmt, 3, (double)ch->value.f);
+    if (rc != SQLITE_OK) {
+      fprintf(stderr, "sqlite3_bind_double failed: %s\n", sqlite3_errmsg(g_db));
+      goto error;
+    }
+    break;
+  }
+
+  rc = sqlite3_step(stmt);
+  if (rc != SQLITE_DONE) {
+    fprintf(stderr, "sqlite3_step failed: %s\n", sqlite3_errmsg(g_db));
+    goto error;
+  }
+  sqlite3_finalize(stmt);
+  return 0;
+
+error:
+  if (stmt) {
+    sqlite3_finalize(stmt);
+  }
+  return -1;
+}
+
 void db_close(void)
 {
   if (g_db) {
