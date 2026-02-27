@@ -7,5 +7,8 @@ target_include_directories(app PRIVATE include)
 
 target_sources(app PRIVATE
   src/main.c
+  src/modem.c
   src/sensor.c
+  src/sensor_reader.c
+  src/coap_libcoap.c
 )

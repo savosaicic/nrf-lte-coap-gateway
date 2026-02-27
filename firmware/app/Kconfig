@@ -1,0 +1,22 @@
+menu "lte-coap-gateway"
+
+config SENSOR_READ_INTERVAL_MS
+	int "Sensor read interval in milliseconds"
+	default 60000 # 1 min
+
+config COAP_SERVER_HOSTNAME
+	string "CoAP server hostname"
+
+config COAP_SERVER_PORT
+	int "CoAP server port"
+	default 5683
+
+config COAP_TX_RESOURCE
+	string "CoAP resource - this is the TX channel of the board"
+	default "sensors"
+
+endmenu
+
+menu "Zephyr Kernel"
+source "Kconfig.zephyr"
+endmenu
