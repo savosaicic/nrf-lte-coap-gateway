@@ -4,12 +4,11 @@
 #include "network_events.h"
 #include "sensor.h"
 #include "coap_backend.h"
+#include "sensor_reader.h"
 
 LOG_MODULE_REGISTER(nrf_coap_gateway, LOG_LEVEL_DBG);
 
 K_EVENT_DEFINE(network_events);
-
-extern struct k_msgq sensor_msgq;
 
 static const coap_backend_t *coap = &coap_backend_libcoap;
 
