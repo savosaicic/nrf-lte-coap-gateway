@@ -10,5 +10,10 @@ manifest:
       revision: v3.2.2
       import: true
 
+    - name: libcoap
+      url: https://github.com/obgm/libcoap
+      revision: develop
+      path: modules/libcoap
+
   self:
     path: nrf-lte-coap-gateway
