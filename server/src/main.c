@@ -54,7 +54,7 @@ int main(int argc, char **argv)
     return -1;
   }
 
-  if (coap_server_init(4242) != 0) {
+  if (coap_server_init(COAP_SERVER_PORT) != 0) {
     fprintf(stderr, "coap_server_init() failed\n");
     return -1;
   }

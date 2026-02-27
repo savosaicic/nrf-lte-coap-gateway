@@ -4,6 +4,8 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+#define COAP_SERVER_PORT 5683
+
 /* COAP_RESOURCE_CHECK_TIME is 1 second in libcoap — how often
    the library checks for observable resource updates and retransmits */
 #define COAP_SERVER_TIMEOUT_MS (COAP_RESOURCE_CHECK_TIME * 1000)
