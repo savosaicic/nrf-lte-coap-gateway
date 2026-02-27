@@ -2,8 +2,8 @@ NAME			:= coap-server
 CC				:= gcc
 CPPFLAGS	:= -Iinclude
 CFLAGS		:= -Wall -Wextra -Werror
-LDFLAGS  	:= -lsqlite3
-SRCS      := main.c db.c
+LDFLAGS  	:= -lsqlite3 -lcoap-3 -lcjson
+SRCS      := main.c db.c sensor.c coap_server.c snapshot_parser.c
 OBJS 			:= $(SRCS:.c=.o)
 DEPS 			:= $(SRCS:.c=.d)
 OBJDIR 		:= obj
