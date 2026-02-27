@@ -61,8 +61,35 @@ int sensor_channel_update_float(sensor_channel_t *ch, float value)
   return 0;
 }
 
-void sensor_channel_get_all(const sensor_channel_t **channels, size_t *count)
+void sensor_snapshot_take(sensor_snapshot_t *snapshot)
 {
-  *channels = g_channels;
-  *count    = g_channel_count;
+  if (!snapshot) {
+    LOG_ERR("sensor_snapshot_take got a null pointer");
+    return;
+  }
+
+	memset(snapshot, 0, sizeof(*snapshot));
+	snapshot->timestamp_ms = k_uptime_get();
+
+	k_mutex_lock(&g_mutex, K_FOREVER);
+
+	for (size_t i = 0; i < g_channel_count; i++) {
+		const sensor_channel_t *ch = &g_channels[i];
+
+		if (!ch->has_value) {
+			continue;
+		}
+
+		sensor_reading_t *r = &snapshot->readings[snapshot->count++];
+		strncpy(r->name, ch->name, SENSOR_NAME_MAX_LEN - 1);
+		r->type = ch->type;
+
+		switch (ch->type) {
+		case SENSOR_TYPE_FLOAT:
+			r->value.f = ch->value.f;
+			break;
+		}
+	}
+
+	k_mutex_unlock(&g_mutex);
 }
