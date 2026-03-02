@@ -10,10 +10,12 @@
 
 typedef enum {
   SENSOR_TYPE_FLOAT = 0,
+  SENSOR_TYPE_INT,
 } sensor_type_t;
 
 typedef union {
   float f;
+  int   i;
 } sensor_value_t;
 
 typedef struct {
@@ -44,6 +46,7 @@ typedef struct {
 sensor_channel_t *sensor_channel_register(const char *name, sensor_type_t type);
 
 int sensor_channel_update_float(sensor_channel_t *ch, float value);
+int sensor_channel_update_int(sensor_channel_t *ch, int value);
 
 void sensor_snapshot_take(sensor_snapshot_t *snapshot);
 

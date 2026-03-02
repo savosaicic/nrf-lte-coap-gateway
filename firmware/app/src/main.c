@@ -45,6 +45,9 @@ static int snapshot_to_json(const sensor_snapshot_t *snapshot, char *buf,
       ret =
         snprintf(buf + written, buf_len - written, "%.2f", (double)r->value.f);
       break;
+    case SENSOR_TYPE_INT:
+      ret = snprintf(buf + written, buf_len - written, "%d", r->value.i);
+      break;
     default:
       return -EINVAL;
     }

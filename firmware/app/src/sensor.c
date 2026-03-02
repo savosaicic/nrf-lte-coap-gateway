@@ -61,6 +61,18 @@ int sensor_channel_update_float(sensor_channel_t *ch, float value)
   return 0;
 }
 
+int sensor_channel_update_int(sensor_channel_t *ch, int value)
+{
+  if (!ch || ch->type != SENSOR_TYPE_INT) {
+    return -EINVAL;
+  }
+  k_mutex_lock(&g_mutex, K_FOREVER);
+  ch->value.i   = value;
+  ch->has_value = true;
+  k_mutex_unlock(&g_mutex);
+  return 0;
+}
+
 void sensor_snapshot_take(sensor_snapshot_t *snapshot)
 {
   if (!snapshot) {
@@ -87,6 +99,9 @@ void sensor_snapshot_take(sensor_snapshot_t *snapshot)
 		switch (ch->type) {
 		case SENSOR_TYPE_FLOAT:
 			r->value.f = ch->value.f;
+			break;
+		case SENSOR_TYPE_INT:
+			r->value.i = ch->value.i;
 			break;
 		}
 	}
