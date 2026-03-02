@@ -11,4 +11,7 @@ target_sources(app PRIVATE
   src/sensor.c
   src/sensor_reader.c
   src/coap_libcoap.c
+  src/sources.c
+  src/temperature_sensor.c
+  src/sensor_config.c
 )

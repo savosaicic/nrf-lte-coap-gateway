@@ -5,6 +5,7 @@
 
 #include "sensor.h"
 #include "network_events.h"
+#include "sources.h"
 
 LOG_MODULE_REGISTER(sensor_reader, LOG_LEVEL_DBG);
 
@@ -15,11 +16,21 @@ K_MSGQ_DEFINE(sensor_msgq, sizeof(sensor_snapshot_t), 4, 1);
 
 static void sensor_reader_thread(void)
 {
+  int err;
+
+  err = sources_init_all();
+  if (err) {
+    LOG_ERR("sources_init_all() failed: %d", err);
+    return;
+  }
+
   LOG_INF("Waiting for LTE connection...");
   k_event_wait(&network_events, NET_EVENT_LTE_CONNECTED, false, K_FOREVER);
   LOG_INF("LTE connected — starting sensor reads");
 
   while (1) {
+    sources_read_all();
+
 		sensor_snapshot_t snapshot;
 		sensor_snapshot_take(&snapshot);
 
