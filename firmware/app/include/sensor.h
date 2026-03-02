@@ -30,11 +30,9 @@ typedef struct {
  * hand off to another thread or serialise without holding any lock.
  */
 typedef struct {
-  char          name[SENSOR_NAME_MAX_LEN];
-  sensor_type_t type;
-  union {
-    float f;
-  } value;
+  char           name[SENSOR_NAME_MAX_LEN];
+  sensor_type_t  type;
+  sensor_value_t value;
 } sensor_reading_t;
 
 typedef struct {
