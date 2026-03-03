@@ -16,4 +16,4 @@ manifest:
       path: modules/libcoap
 
   self:
-    path: nrf-lte-coap-gateway
+    path: nrf-sensor-gateway

@@ -7,7 +7,7 @@
 #include "coap_backend.h"
 #include "sensor_reader.h"
 
-LOG_MODULE_REGISTER(nrf_coap_gateway, LOG_LEVEL_DBG);
+LOG_MODULE_REGISTER(nrf_sensor_gateway, LOG_LEVEL_DBG);
 
 K_EVENT_DEFINE(network_events);
 

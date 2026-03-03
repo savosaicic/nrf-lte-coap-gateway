@@ -1,4 +1,4 @@
-menu "lte-coap-gateway"
+menu "lte-sensor-gateway"
 
 config SENSOR_READ_INTERVAL_MS
 	int "Sensor read interval in milliseconds"
