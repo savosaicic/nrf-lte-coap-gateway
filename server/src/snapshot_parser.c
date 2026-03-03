@@ -1,5 +1,6 @@
 #include <cjson/cJSON.h>
 #include <stdarg.h>
+#include <stdint.h>
 #include <string.h>
 #include <stdio.h>
 
@@ -106,6 +107,14 @@ int parse_snapshot_json(const char *buf, size_t len, parsed_snapshot_t *out)
     log_error("JSON parse failed near: %s", err ? err : "unknown");
     return -1;
   }
+
+  const cJSON *ts = cJSON_GetObjectItemCaseSensitive(root, "ts");
+  if (!cJSON_IsNumber(ts)) {
+    log_error("missing or invalid 'ts' field");
+    cJSON_Delete(root);
+    return -1;
+  }
+  out->timestamp_ms = (int64_t)ts->valuedouble;
 
   const cJSON *readings = cJSON_GetObjectItemCaseSensitive(root, "readings");
   if (!cJSON_IsArray(readings)) {

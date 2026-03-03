@@ -10,6 +10,7 @@ typedef sensor_channel_t parsed_reading_t;
 typedef struct {
   parsed_reading_t readings[SENSOR_MAX_CHANNELS];
   size_t           count;
+  int64_t          timestamp_ms;
 } parsed_snapshot_t;
 
 int parse_snapshot_json(const char *buf, size_t len, parsed_snapshot_t *out);

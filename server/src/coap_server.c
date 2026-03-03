@@ -73,7 +73,7 @@ static void handle_snapshot_post(coap_resource_t     *resource,
       break;
     }
 
-    if (db_insert_reading(ch, 0) != 0) {
+    if (db_insert_reading(ch, snap.timestamp_ms) != 0) {
       fprintf(stderr, "handle_snapshot_post: db insert failed for '%s'\n",
               r->name);
       /* don't abort: best effort for remaining channels */
