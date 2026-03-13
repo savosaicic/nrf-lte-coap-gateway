@@ -54,6 +54,9 @@ static int snapshot_to_json(const sensor_snapshot_t *snapshot, char *buf,
     case SENSOR_TYPE_STRING:
       cJSON_AddStringToObject(entry, "v", r->value.s);
       break;
+    case SENSOR_TYPE_BOOL:
+      cJSON_AddBoolToObject(entry, "v", r->value.b);
+      break;
     default:
       cJSON_Delete(entry);
       ret = -EINVAL;

@@ -13,12 +13,14 @@ typedef enum {
   SENSOR_TYPE_FLOAT = 0,
   SENSOR_TYPE_INT,
   SENSOR_TYPE_STRING,
+  SENSOR_TYPE_BOOL,
 } sensor_type_t;
 
 typedef union {
   float f;
   int   i;
   char  s[SENSOR_STRING_MAX_LEN];
+  bool  b;
 } sensor_value_t;
 
 typedef struct {
@@ -51,6 +53,7 @@ sensor_channel_t *sensor_channel_register(const char *name, sensor_type_t type);
 int sensor_channel_update_float(sensor_channel_t *ch, float value);
 int sensor_channel_update_int(sensor_channel_t *ch, int value);
 int sensor_channel_update_string(sensor_channel_t *ch, const char *value);
+int sensor_channel_update_bool(sensor_channel_t *ch, bool value);
 
 void sensor_snapshot_take(sensor_snapshot_t *snapshot);
 
