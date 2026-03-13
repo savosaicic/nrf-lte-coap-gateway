@@ -7,6 +7,8 @@
 #include "coap_backend.h"
 #include "sensor_reader.h"
 
+#define JSON_BUF_SIZE 1024
+
 LOG_MODULE_REGISTER(nrf_sensor_gateway, LOG_LEVEL_DBG);
 
 K_EVENT_DEFINE(network_events);
@@ -73,7 +75,6 @@ static int snapshot_to_json(const sensor_snapshot_t *snapshot, char *buf,
   return written;
 }
 
-#define JSON_BUF_SIZE 1024
 int main(void)
 {
   int               err;
