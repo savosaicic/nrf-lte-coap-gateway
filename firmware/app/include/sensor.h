@@ -5,17 +5,20 @@
 #include <stddef.h>
 #include <stdint.h>
 
-#define SENSOR_MAX_CHANNELS 16
-#define SENSOR_NAME_MAX_LEN 16
+#define SENSOR_MAX_CHANNELS   16
+#define SENSOR_NAME_MAX_LEN   16
+#define SENSOR_STRING_MAX_LEN 64
 
 typedef enum {
   SENSOR_TYPE_FLOAT = 0,
   SENSOR_TYPE_INT,
+  SENSOR_TYPE_STRING,
 } sensor_type_t;
 
 typedef union {
   float f;
   int   i;
+  char  s[SENSOR_STRING_MAX_LEN];
 } sensor_value_t;
 
 typedef struct {
@@ -47,6 +50,7 @@ sensor_channel_t *sensor_channel_register(const char *name, sensor_type_t type);
 
 int sensor_channel_update_float(sensor_channel_t *ch, float value);
 int sensor_channel_update_int(sensor_channel_t *ch, int value);
+int sensor_channel_update_string(sensor_channel_t *ch, const char *value);
 
 void sensor_snapshot_take(sensor_snapshot_t *snapshot);
 

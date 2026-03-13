@@ -9,7 +9,7 @@
 
 LOG_MODULE_REGISTER(sensor_reader, LOG_LEVEL_DBG);
 
-#define STACKSIZE       1024
+#define STACKSIZE       2048
 #define THREAD_PRIORITY 7
 
 K_MSGQ_DEFINE(sensor_msgq, sizeof(sensor_snapshot_t), 4, 1);

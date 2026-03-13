@@ -73,6 +73,20 @@ int sensor_channel_update_int(sensor_channel_t *ch, int value)
   return 0;
 }
 
+int sensor_channel_update_string(sensor_channel_t *ch, const char *value)
+{
+  if (!ch || ch->type != SENSOR_TYPE_STRING) {
+    return -EINVAL;
+  }
+  k_mutex_lock(&g_mutex, K_FOREVER);
+  strncpy(ch->value.s, value, SENSOR_STRING_MAX_LEN - 1);
+  ch->value.s[SENSOR_STRING_MAX_LEN - 1] = '\0';
+  ch->has_value = true;
+
+  k_mutex_unlock(&g_mutex);
+  return 0;
+}
+
 void sensor_snapshot_take(sensor_snapshot_t *snapshot)
 {
   if (!snapshot) {
@@ -102,6 +116,10 @@ void sensor_snapshot_take(sensor_snapshot_t *snapshot)
 			break;
 		case SENSOR_TYPE_INT:
 			r->value.i = ch->value.i;
+			break;
+		case SENSOR_TYPE_STRING:
+			strncpy(r->value.s, ch->value.s, SENSOR_STRING_MAX_LEN - 1);
+			r->value.s[SENSOR_STRING_MAX_LEN - 1] = '\0';
 			break;
 		}
 	}
