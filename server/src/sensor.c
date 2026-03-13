@@ -124,3 +124,21 @@ int sensor_channel_update_string(sensor_channel_t *ch, const char *value)
   ch->has_value = true;
   return 0;
 }
+
+/**
+ * @brief Update the bool value of a sensor channel
+ *
+ * @param ch    Pointer to the sensor channel
+ * @param value Boolean value to set
+ *
+ * @return 0 on success, -1 on failure
+ */
+int sensor_channel_update_bool(sensor_channel_t *ch, bool value)
+{
+  if (!ch || ch->type != SENSOR_TYPE_BOOL) {
+    return -1;
+  }
+  ch->value.b   = value;
+  ch->has_value = true;
+  return 0;
+}
